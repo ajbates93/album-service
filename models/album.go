@@ -1,5 +1,7 @@
 package models
 
+import "fmt"
+
 type album struct {
 	ID     string  `json:"id"`
 	Title  string  `json:"title"`
@@ -49,4 +51,15 @@ func AddAlbum(newAlbum album) album {
 	albums = append(albums, newAlbum)
 
 	return newAlbum
+}
+
+func GetAlbumById(id string) (album, error) {
+	for _, a := range albums {
+		if a.ID == id {
+			return a, nil
+		}
+	}
+
+	var a album
+	return a, fmt.Errorf("album with id %s not found", id)
 }

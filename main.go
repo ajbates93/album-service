@@ -36,13 +36,15 @@ func getAlbumByID(c *gin.Context) {
 
 	// loop over the list of albums, looking for
 	// an album whose ID value matches the parameter.
-	for _, a := range albums {
-		if a.ID == id {
-			c.IndentedJSON(http.StatusOK, a)
-			return
-		}
+	album, err := models.GetAlbumById(id)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": err.Error()})
+		return
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+
+	c.IndentedJSON(http.StatusOK, album)
+	return
 }
 
 func getArtistBySearch(c *gin.Context) {
