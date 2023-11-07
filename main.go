@@ -3,6 +3,9 @@ package main
 import (
 	"net/http"
 
+	"log"
+	"time"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -55,11 +58,24 @@ func getAlbumByID(c *gin.Context) {
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
 }
 
+func LoggerMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		start := time.Now()
+		c.Next()
+		duration := time.Since(start)
+		log.Printf("Request - Method: %s | Status: %d | Duration: %v", c.Request.Method, c.Writer.Status(), duration)
+	}
+}
+
 func main() {
 	router := gin.Default()
+
+	// Use custom logger middleware
+	router.Use(LoggerMiddleware())
+
 	router.GET("/albums", getAlbums)
 	router.GET("/albums/:id", getAlbumByID)
 	router.POST("/albums", postAlbums)
 
-	router.Run("localhost:8080")
+	router.Run(":8080")
 }
