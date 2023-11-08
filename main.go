@@ -19,13 +19,14 @@ func getAlbums(c *gin.Context) {
 
 // postAlbums adds an album from JSON received in the request body.
 func postAlbums(c *gin.Context) {
-	newAlbum := models.AddAlbum(c.BindJSON(&newAlbum))
-	// Call BindJSON to bind the received JSON to
-	// newAlbum.
+	var newAlbum models.Album
 	if err := c.BindJSON(&newAlbum); err != nil {
 		return
 	}
+	// Call BindJSON to bind the received JSON to
+	// newAlbum.
 
+	newAlbum = models.AddAlbum(newAlbum)
 	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
 

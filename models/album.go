@@ -2,14 +2,14 @@ package models
 
 import "fmt"
 
-type album struct {
+type Album struct {
 	ID     string  `json:"id"`
 	Title  string  `json:"title"`
 	Artist string  `json:"artist"`
 	Price  float64 `json:"price"`
 }
 
-var albums = []album{
+var albums = []Album{
 	{ID: "1", Title: "Blue Train", Artist: "John Coltrane", Price: 56.99},
 	{ID: "2", Title: "Jeru", Artist: "Gerry Mulligan", Price: 17.99},
 	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
@@ -43,23 +43,23 @@ var albums = []album{
 	{ID: "31", Title: "Rock and Roll", Artist: "John Lennon", Price: 12.99},
 }
 
-func GetAlbums() []album {
+func GetAlbums() []Album {
 	return albums
 }
 
-func AddAlbum(newAlbum album) album {
+func AddAlbum(newAlbum Album) Album {
 	albums = append(albums, newAlbum)
 
 	return newAlbum
 }
 
-func GetAlbumById(id string) (album, error) {
+func GetAlbumById(id string) (Album, error) {
 	for _, a := range albums {
 		if a.ID == id {
 			return a, nil
 		}
 	}
 
-	var a album
+	var a Album
 	return a, fmt.Errorf("album with id %s not found", id)
 }
